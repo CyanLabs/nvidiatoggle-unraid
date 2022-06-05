@@ -11,7 +11,7 @@
 <!ENTITY plgNAME   "&name;-&version;-x86_64">
 <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
 ]>
-]>
+
 <PLUGIN name="&name;"
 		author="&author;"
 		launch="&launch;"
