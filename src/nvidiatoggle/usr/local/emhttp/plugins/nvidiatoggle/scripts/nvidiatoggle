@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ "$1" == "nvidia" ]; then
+if [[ $1 == *"nvidia"* ]]; then
     if [ "$2" == "prepare" ]; then
         action="stop"
     elif [ "$2" == "release" ]; then

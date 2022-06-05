@@ -8,7 +8,7 @@
 <!ENTITY pluginURL "&gitURL;/&name;.plg">
 <!ENTITY pkgURL    "&gitURL;/pkg">
 <!ENTITY plgPATH   "/boot/config/plugins/&name;">
-<!ENTITY plgNAME   "&name;-&version;-x86_64">
+<!ENTITY plgNAME   "&name;-&version;">
 <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
 ]>
 <PLUGIN name="&name;"
@@ -46,7 +46,7 @@ fi
 Get the plugin bundle.
 -->
 <FILE Name="&plgPATH;/&plgNAME;.txz" Min="6.10" Run="upgradepkg --install-new">
-	<URL>"&gitURL;/&name;-&version;.txz"</URL>
+	<URL>&pkgURL;/&plgNAME;.txz</URL>
 </FILE>
 
 
