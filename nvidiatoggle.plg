@@ -1,0 +1,94 @@
+<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE PLUGIN [
+<!ENTITY name      "nvidiatoggle">
+<!ENTITY author    "Fma965">
+<!ENTITY version   "2022.06.05">
+<!ENTITY launch    "Dashboard">
+<!ENTITY gitURL    "https://raw.githubusercontent.com/Cyanlabs/&name;-unraid/master">
+<!ENTITY pluginURL "&gitURL;/&name;.plg">
+<!ENTITY pkgURL    "&gitURL;/pkg">
+<!ENTITY plgPATH   "/boot/config/plugins/&name;">
+<!ENTITY plgNAME   "&name;-&version;-x86_64">
+<!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
+]>
+]>
+<PLUGIN name="&name;"
+		author="&author;"
+		launch="&launch;"
+		version="&version;"
+		pluginURL="&pluginURL;"
+		support="&supportURL;"
+		icon="fa-toggle-off"
+		min="6.10.0">
+
+<CHANGES>
+##NVidiaToggle
+###&version;
+
+First Release
+</CHANGES>
+
+<!--
+The 'pre-install' script.
+-->
+<FILE Run="/bin/bash">
+<INLINE>
+# Check to see if new install.
+
+if [ ! -d "/boot/config/plugins/&name;" ]
+then
+ mkdir "/boot/config/plugins/&name;"
+fi
+
+
+</INLINE>
+</FILE>
+
+<!--
+Get the plugin bundle.
+-->
+<FILE Name="&plgPATH;/&plgNAME;.txz" Min="6.10" Run="upgradepkg --install-new">
+	<URL>"&gitURL;/&name;-&version;.txz"</URL>
+</FILE>
+
+
+<!--
+The 'post-install' script.
+-->
+<FILE Run="/bin/bash">
+<INLINE>
+# Adjust plugin permissions.
+chmod 755 -R /usr/local/emhttp/plugins/&name; 2>/dev/null
+
+# Fix permissions of executable files
+chmod +x /usr/local/emhttp/plugins/&name;/scripts/* /usr/local/emhttp/plugins/&name;/event/*
+
+# Update QEMU Hooks file and udev rules.
+/usr/local/emhttp/plugins/&name;/scripts/install.sh 2>/dev/null
+
+echo 
+echo "-----------------------------------------------------------"
+echo " &name; has been installed."
+echo " "
+echo " Copyright 2022, &author;"
+echo " Version: &version;"
+echo ""
+echo "-----------------------------------------------------------"
+echo 
+</INLINE>
+</FILE>
+
+<!--
+The 'remove' script.
+-->
+<FILE Run="/bin/bash" Method="remove">
+  <INLINE>
+   echo "Removing &name;..."
+   removepkg &plgPATH;/*.txz
+   rm -f /etc/libvirt/hooks/qemu.d/NvidiaToggle
+   rm -rf &plgPATH;
+   rm -rf &emhttp;
+   echo "&name; has been removed"
+  </INLINE>
+ </FILE>
+</PLUGIN>

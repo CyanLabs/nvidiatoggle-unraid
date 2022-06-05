@@ -1,0 +1,22 @@
+#!/bin/bash
+if [ "$1" == "nvidia" ]; then
+    if [ "$2" == "prepare" ]; then
+        action="stop"
+    elif [ "$2" == "release" ]; then
+        action="start"
+    else
+        exit 0
+    fi
+else
+    exit 0
+fi
+
+containers=$(sudo docker ps | awk '{if(NR>1) print $NF}')
+
+# loop through all containers
+for container in $containers
+do
+  if [ $(docker inspect --format='{{.HostConfig.Runtime}}' $container) = nvidia ]; then
+        echo "docker $action $container"
+  fi
+done
